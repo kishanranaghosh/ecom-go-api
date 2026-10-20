@@ -28,7 +28,7 @@ migrate-down:
 	migrate -path db/migrations -database "postgres://user:123456@localhost:5432/ecom?sslmode=disable" down
 
 docker-up:
-	docker compose -f ./docker/docker-compose.yml up -d
+	docker compose -f ./docker/docker-compose.yaml up --build -d
 
 docker-down:
-	docker compose -f ./docker/docker-compose.yml down
+	docker compose -f ./docker/docker-compose.yaml down
