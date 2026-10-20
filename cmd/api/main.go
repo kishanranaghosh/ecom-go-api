@@ -32,5 +32,5 @@ func main() {
 	gin.SetMode(cfg.Server.GinMode)
 
 	log.Info().Msgf("Starting server on port %s in %s mode", cfg.Server.Port, cfg.Server.GinMode)
-
+	
 }
