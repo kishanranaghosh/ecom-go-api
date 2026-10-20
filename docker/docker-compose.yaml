@@ -1,9 +1,9 @@
 services:
-  postgres:
+  db:
     image: postgres:15.3-alpine
     container_name: postgres
     environment:
-      POSTGRES_USER: user
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123456
       POSTGRES_DB: ecom
     ports:
