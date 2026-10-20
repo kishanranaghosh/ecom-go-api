@@ -57,7 +57,6 @@ func Load() (*config, error) {
 	jwtExpiresIn, _ := time.ParseDuration(getEnv("JWT_EXPIRES_IN", "24h"))
 	refreshTokenExpires, _ := time.ParseDuration(getEnv("REFRESH_TOKEN_EXPIRES_IN", "720h"))
 	maxUploadSize, _ := strconv.ParseInt(getEnv("MAX_UPLOAD_SIZE", "10485760"), 10, 64)
-	// smtpPort, _ := strconv.Atoi(getEnv("SMTP_PORT", "1025"))
 
 	return &config{
 		Server: ServerConfig{
@@ -91,7 +90,7 @@ func Load() (*config, error) {
 	}, nil
 }
 
-func getEnv(key string, defaultValue string) string {
+func getEnv(key, defaultValue string) string {
 	if value := os.Getenv(key); value != "" {
 		return value
 	}
