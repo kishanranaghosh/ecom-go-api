@@ -66,7 +66,7 @@ func main() {
 	defer cancel()
 	if err := httServer.Shutdown(ctx); err != nil {
 
-		log.Fatal().Err(err).Msg("Server forced to shutdown")
+		log.Error().Err(err).Msg("Server forced to shutdown")
 		return
 	}
 
