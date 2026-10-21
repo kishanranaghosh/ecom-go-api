@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/kishanranaghosh/ecom-go-api/internal/models"
 	"github.com/kishanranaghosh/ecom-go-api/internal/utils"
 )
 
@@ -31,6 +32,18 @@ func (s *Server) authMiddleware() gin.HandlerFunc {
 		c.Set("user_id", claims.UserID)
 		c.Set("email", claims.Email)
 		c.Set("role", claims.Role)
+		c.Next()
+	}
+}
+
+func (s *Server) adminMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		role, exists := c.Get("role")
+		if !exists || role != string(models.UserRoleAdmin) {
+			utils.ForbiddenResponse(c, "Admin access required")
+			c.Abort()
+			return
+		}
 		c.Next()
 	}
 }
