@@ -26,10 +26,10 @@ format:
 
 
 migrate-up:
-	migrate -path db/migrations -database "postgres://user:123456@localhost:5432/ecom?sslmode=disable" up
+	migrate -path db/migrations -database "postgres://postgres:123456@localhost:5432/ecom?sslmode=disable" up
 
 migrate-down:
-	migrate -path db/migrations -database "postgres://user:123456@localhost:5432/ecom?sslmode=disable" down
+	migrate -path db/migrations -database "postgres://postgres:123456@localhost:5432/ecom?sslmode=disable" down
 
 docker-up:
 	docker compose -f ./docker/docker-compose.yaml up --build -d
