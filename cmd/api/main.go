@@ -38,7 +38,7 @@ func main() {
 
 	log.Info().Msg("Database connection established")
 	gin.SetMode(cfg.Server.GinMode)
-	srv := server.New(&cfg.Server, db, &log)
+	srv := server.New(&cfg.Server, db, &log, &cfg.JWT)
 
 	router := srv.SetupRoutes()
 

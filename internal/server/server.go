@@ -8,16 +8,18 @@ import (
 )
 
 type Server struct {
-	config *config.ServerConfig
-	db     *gorm.DB
-	logger zerolog.Logger
+	serverConfig *config.ServerConfig
+	JWTConfig    *config.JWTConfig
+	db           *gorm.DB
+	logger       zerolog.Logger
 }
 
-func New(cfg *config.ServerConfig, db *gorm.DB, logger *zerolog.Logger) *Server {
+func New(cfg *config.ServerConfig, db *gorm.DB, logger *zerolog.Logger, jwt *config.JWTConfig) *Server {
 	return &Server{
-		config: cfg,
-		db:     db,
-		logger: *logger,
+		serverConfig: cfg,
+		JWTConfig:    jwt,
+		db:           db,
+		logger:       *logger,
 	}
 }
 
