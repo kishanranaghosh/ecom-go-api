@@ -18,8 +18,12 @@ run: build
 dev:
 	go run cmd/api/main.go
 
-lint:
+lint: format
 	golangci-lint run ./...
+
+format:
+	@gofmt -s -w .
+
 
 migrate-up:
 	migrate -path db/migrations -database "postgres://user:123456@localhost:5432/ecom?sslmode=disable" up
