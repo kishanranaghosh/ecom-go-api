@@ -13,11 +13,11 @@ type Server struct {
 	logger zerolog.Logger
 }
 
-func New(config *config.ServerConfig, db *gorm.DB, logger zerolog.Logger) *Server {
+func New(cfg *config.ServerConfig, db *gorm.DB, logger *zerolog.Logger) *Server {
 	return &Server{
-		config: config,
+		config: cfg,
 		db:     db,
-		logger: logger,
+		logger: *logger,
 	}
 }
 
