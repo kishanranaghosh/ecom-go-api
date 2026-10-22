@@ -22,7 +22,8 @@ type AuthService struct {
 	// eventPublisher events.Publisher
 }
 
-func NewAuthService(config *config.Config,
+func NewAuthService(
+	config *config.Config,
 	// eventPublisher events.Publisher,
 	userRepo repositories.UserRepositoryInterface,
 	carRepo repositories.CartRepositoryInterface,
