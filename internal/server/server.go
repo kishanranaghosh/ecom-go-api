@@ -17,14 +17,30 @@ type Server struct {
 	productService services.ProductServiceInterface
 	uploadService  services.UploadServiceInterface
 	userService    services.UserServiceInterface
+	cartService    services.CartServiceInterface
+	orderService   services.OrderServiceInterface
 }
 
-func New(cfg *config.ServerConfig, db *gorm.DB, logger *zerolog.Logger, jwt *config.JWTConfig) *Server {
+func New(
+	cfg *config.Config,
+	logger *zerolog.Logger,
+	authService services.AuthServiceInterface,
+	productService services.ProductServiceInterface,
+	userService services.UserServiceInterface,
+	uploadService services.UploadServiceInterface,
+	cartService services.CartServiceInterface,
+	orderService services.OrderServiceInterface,
+) *Server {
 	return &Server{
-		serverConfig: cfg,
-		JWTConfig:    jwt,
-		db:           db,
-		logger:       *logger,
+		serverConfig:   &cfg.Server,
+		JWTConfig:      &cfg.JWT,
+		logger:         logger.With().Str("component", "server").Logger(),
+		authService:    authService,
+		productService: productService,
+		userService:    userService,
+		uploadService:  uploadService,
+		cartService:    cartService,
+		orderService:   orderService,
 	}
 }
 
@@ -39,6 +55,50 @@ func (s *Server) SetupRoutes() *gin.Engine {
 
 	// routes
 	router.GET("/health", s.healthCheckHandler)
+
+	api := router.Group("/api/v1")
+	{
+		auth := api.Group("/auth")
+		{ //nolint:gocritic // I need this for readability
+			auth.POST("/register", s.register)
+			auth.POST("/login", s.login)
+			auth.POST("/refresh", s.refreshToken)
+			auth.POST("/logout", s.logout)
+
+		}
+		protected := api.Group("/")
+		protected.Use(s.authMiddleware())
+		{
+			// User routes
+			users := protected.Group("/users")
+			{
+				userRoutes := users
+				userRoutes.GET("/profile", s.getProfile)
+				userRoutes.PUT("/profile", s.updateProfile)
+			}
+
+			// category routes
+			categories := protected.Group("/categories")
+			{
+				categoryRoute := categories
+				categoryRoute.POST("/", s.adminMiddleware(), s.createCategory)
+				categoryRoute.PUT("/:id", s.adminMiddleware(), s.updateCategory)
+				categoryRoute.DELETE("/:id", s.adminMiddleware(), s.deleteCategory)
+			}
+
+			// product routes
+			products := protected.Group("/products")
+			{
+				productRoutes := products
+				productRoutes.POST("/", s.adminMiddleware(), s.createProduct)
+				productRoutes.PUT("/:id", s.adminMiddleware(), s.updateProduct)
+				productRoutes.DELETE("/:id", s.adminMiddleware(), s.deleteProduct)
+				productRoutes.POST("/:id/images", s.adminMiddleware(), s.uploadProductImage)
+
+			}
+
+		}
+	}
 	return router
 }
 
