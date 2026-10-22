@@ -3,15 +3,20 @@ package server
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/kishanranaghosh/ecom-go-api/internal/config"
+	"github.com/kishanranaghosh/ecom-go-api/internal/services"
 	"github.com/rs/zerolog"
 	"gorm.io/gorm"
 )
 
 type Server struct {
-	serverConfig *config.ServerConfig
-	JWTConfig    *config.JWTConfig
-	db           *gorm.DB
-	logger       zerolog.Logger
+	serverConfig   *config.ServerConfig
+	JWTConfig      *config.JWTConfig
+	db             *gorm.DB
+	logger         zerolog.Logger
+	authService    services.AuthServiceInterface
+	productService services.ProductServiceInterface
+	uploadService  services.UploadServiceInterface
+	userService    services.UserServiceInterface
 }
 
 func New(cfg *config.ServerConfig, db *gorm.DB, logger *zerolog.Logger, jwt *config.JWTConfig) *Server {
