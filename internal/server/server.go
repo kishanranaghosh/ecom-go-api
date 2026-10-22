@@ -96,7 +96,11 @@ func (s *Server) SetupRoutes() *gin.Engine {
 				productRoutes.POST("/:id/images", s.adminMiddleware(), s.uploadProductImage)
 
 			}
-
+			// public routes
+			api.GET("/categories", s.getCategories)
+			api.GET("/search", s.searchProducts)
+			api.GET("/products", s.getProducts)
+			api.GET("/products/:id", s.getProduct)
 		}
 	}
 	return router
