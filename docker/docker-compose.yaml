@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: ecom
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+  localstack:
+    image: localstack/localstack
+    environment:
+      - SERVICES=s3
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+    ports:
+      - "4566:4566"
+      - "4571:4571"
+    volumes:
+      - localstack_data:/tmp/localstack
+      - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  pg_data:
+  localstack_data:

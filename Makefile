@@ -1,3 +1,13 @@
+.PHONY: help build run lint migrate-up migrate-down
+
+help:
+	@echo "Available commands:"
+	@echo "  build          Build the application"
+	@echo "  run            Build and run the application"
+	@echo "  lint           Run golangci-lint on the codebase"
+	@echo "  migrate-up     Apply database migrations"
+	@echo "  migrate-down   Rollback database migrations"
+
 build:
 	go build -o bin/app ./cmd/api/main.go
 run: build
